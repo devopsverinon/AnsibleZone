@@ -1,0 +1,25 @@
+---
+ - hosts: all
+   become: yes
+   gather_facts: no
+
+   tasks:
+   
+   - name:  update package
+     apt:
+      update_cache: yes
+
+   - name: copying html file apache2 server
+     copy:
+       src: /home/ansible/shiva.html
+       dest: /var/www/html/shiva.html
+   
+   - name: copying php file to apache server
+     copy:
+       src: /home/ansible/info.php
+       dest: /var/www/html/info.php
+
+   - name: Restart service apache2
+     service:
+       name: apache2
+       state: restarted  
