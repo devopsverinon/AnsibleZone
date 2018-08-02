@@ -1,0 +1,14 @@
+---
+# tasks file for install
+
+- name:  update package
+  apt:
+    update_cache: yes
+  tags:
+        - update
+
+- name: "installing apache"
+  apt:
+    name: "{{apache_pack_deb}}"
+    state: present
+
