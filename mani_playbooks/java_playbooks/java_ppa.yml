@@ -23,4 +23,8 @@
   - name: java path setting
     lineinfile:
       path: /etc/environment
-      line: 'JAVA_HOME="/usr/lib/jvm/java-8-oracle"'  
+      line: 'export JAVA_HOME="/usr/lib/jvm/java-8-oracle"' 
+  - name: setting maven path upto bin
+    lineinfile:
+     path: /etc/environment
+     line: 'export PATH=$PATH:$JAVA_HOME/bin'
