@@ -1,0 +1,38 @@
+---
+# tasks file for ansible
+
+- name: Update apt cache
+  apt: update_cache=yes
+
+- name: Upgrade packages
+  apt: upgrade=dist
+
+- name: ensure required packages are installed for ansible
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+  - software-properties-common
+  
+- name: Add ansible repository to sources
+  apt_repository: repo='ppa:ansible/ansible'
+  
+- name: Update apt cache
+  apt: update_cache=yes
+
+- name: Upgrade packages
+  apt: upgrade=dist
+
+
+- name: Install ansible 
+  become: yes
+  apt: name={{item}} state=latest
+  with_items:
+    - ansible
+
+
+#- name: Run a command as the apache user
+ # command: install ansible
+ # become: true
+  #become_user: root
+ 
+
+ #command: sudo apt-get install ansible -y
