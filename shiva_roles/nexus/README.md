@@ -1,3 +1,11 @@
+To access nexus repo:
+
+ip_adress:8081
+
+default:
+username : admin
+password: admin123
+
 Role Name
 =========
 
