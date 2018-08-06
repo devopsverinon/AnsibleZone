@@ -1,0 +1,75 @@
+---
+# tasks file for maven
+
+- name: copy file from server to node dest flodr
+  copy:
+    src: apache-maven-3.3.9-bin.tar.gz
+    dest: /usr/local/apache-maven-3.3.9-bin.tar.gz
+    owner: root
+    group: root
+    mode: 0755
+
+
+- name: untar file at dest dir
+  unarchive:
+    src: /usr/local/apache-maven-3.3.9-bin.tar.gz
+    dest: /usr/local/
+    remote_src: True
+
+
+- iname: install mvn link
+  become: yes
+  file:
+    state: link
+    force: yes
+    src: /usr/local/apache-maven-3.3.9/bin/mvn
+    dest: /usr/local/bin/mvn
+    owner: root
+    group: root
+    mode: u=rwx,go=rx
+
+- name: install mvnDebug link
+  become: yes
+  file:
+    state: link
+    force: yes
+    src: /usr/local/apache-maven-3.3.9/bin/mvnDebug
+    dest: /usr/local/bin/mvnDebug
+    owner: root
+    group: root
+    mode: u=rwx,go=rx
+
+- file:
+    path: /etc/profile.d/maven.sh
+    state: touch
+    mode: u=rw,g=r,o=r
+
+- lineinfile:
+    path: /etc/profile.d/maven.sh
+    line: export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+
+- lineinfile: 
+    line: export M2_HOME=/usr/local/apache-maven
+    path: /etc/profile.d/maven.sh
+
+- lineinfile: 
+    line: export MAVEN_HOME=/usr/local/apache-maven
+    path: /etc/profile.d/maven.sh
+
+- lineinfile: 
+    line: export PATH=${M2_HOME}/bin:${PATH}
+    path: /etc/profile.d/maven.sh
+
+- 
+   shell: "sudo su - root -c 'source /etc/profile.d/maven.sh'"
+
+#- name: mvn check
+#  command: mvn -v 
+#- name: Run a command as nobody
+ # command: source /etc/profile.d/maven.sh
+  #become: no
+  #become_method: su
+  #become_user: nobody
+  #become_flags: -s /bin/sh
+
+
