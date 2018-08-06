@@ -6,6 +6,7 @@
     package:
      name:
       - unzip
+  # maven releases https://archive.apache.org/dist/maven/maven-3/
   - name: instaling maven via wget
     get_url:
      url: 'http://www-us.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.zip'
@@ -17,4 +18,9 @@
   - name: setting maven path
     lineinfile:
      path: /etc/environment
-     line: 'M2_HOME=/opt/apache-maven-3.5.4' 
+     line: 'export M2_HOME=/opt/apache-maven-3.5.4'
+  - name: setting maven path upto bin
+    lineinfile:
+     path: /etc/environment
+     line: 'export PATH=$PATH:$M2_HOME/bin'
+   
