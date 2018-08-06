@@ -20,4 +20,8 @@
   - name: java path setting
     lineinfile:
       path: /etc/environment
-      line: 'JAVA_HOME="/opt/jdk1.8.0_181"'
+      line: 'export JAVA_HOME="/opt/jdk1.8.0_181"'
+  - name: setting maven path upto bin
+    lineinfile:
+     path: /etc/environment
+     line: 'export PATH=$PATH:$JAVA_HOME/bin'    
