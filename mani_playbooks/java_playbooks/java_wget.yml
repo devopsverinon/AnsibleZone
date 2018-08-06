@@ -21,7 +21,3 @@
     lineinfile:
       path: /etc/environment
       line: 'JAVA_HOME="/opt/jdk1.8.0_181"'
-  - name: java bin path
-    lineinfile:
-      path: /etc/environment
-      line: 'PATH=${PATH}:${JAVA_HOME}/bin'   
