@@ -1,0 +1,54 @@
+---
+
+# create a directory if it doesn't exist
+- file:
+    path: /usr/local/nexus
+    state: directory
+    mode: 0755
+
+
+- name: Copy the file
+  copy: src=nexus-3.0.2-02-unix.tar.gz dest=/usr/local
+
+
+- name: untar file at dest directory
+  unarchive:
+    src: nexus-3.0.2-02-unix.tar.gz
+    dest: /usr/local/
+    remote_src: false
+
+- name: Create symlink nexus-latest
+  file:
+    src: /usr/local/nexus-3.0.2-02
+    dest: /usr/local/nexus-latest
+    owner: 0755
+    group: 0755
+    state: link
+
+# adding nexus environment varibles
+- lineinfile:
+    path: /etc/profile
+    line: export NEXUS_PLATFORM=linux-x86-64
+
+- lineinfile: 
+    line: export NEXUS_HOME=/usr/local/nexus-3.0.2-02
+    path: /etc/profile
+
+- lineinfile: 
+    line: export NEXUS_EXEC=$NEXUS_HOME/usr/local/nexus-3.0.2-02/bin/$NEXUS_PLATFORM
+    path: /etc/profile
+
+- lineinfile: 
+    line: export PATH=$NEXUS_EXEC:$PATH
+    path: /etc/profile
+
+# Executing shell command to run (or) nexus repositry
+# default username = admin  passwd: admin123
+#- 
+ #  shell: "sudo su - root -c '/usr/local/nexus-3.0.2-02/bin/./nexus start'"
+
+
+- name: Run a command as the user
+  command: /usr/local/nexus-3.0.2-02/bin/./nexus start
+  become: true
+  become_user: root

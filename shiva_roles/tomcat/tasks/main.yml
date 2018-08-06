@@ -1,0 +1,60 @@
+---
+# tasks file for tomcat
+
+# create a tomcat8 directory if it doesn't exist
+- file:
+    path: /opt/tomcat8
+    state: directory
+    mode: 0755
+
+- name: copy file from server to node dest flodr
+  copy:
+    src: apache-tomcat-8.5.23.tar.gz
+    dest: /opt/tomcat8/apache-tomcat-8.5.23.tar.gz
+    owner: root
+    group: root
+    mode: 0755
+
+
+- name: untar file at dest dir
+  unarchive:
+    src: /opt/tomcat8/apache-tomcat-8.5.23.tar.gz
+    dest: /opt/tomcat8/
+    remote_src: True
+
+- shell: "sudo su - root -c '/opt/tomcat8/apache-tomcat-8.5.23/bin/startup.sh'"
+
+
+#- name: paste .war file to tomcat webapp fldr
+ # copy: src="jenkins.war"  dest="/opt/tomcat8/apache-tomcat-8.5.23/webapps"
+ # tags: deploy
+
+#- name: copy .war file from server to node dest flodr
+ # copy:
+  #  src: jenkins.war
+   # dest: /opt/tomcat8/apache-tomcat-8.5.23/webapps/
+    #owner: root
+    #group: root
+    #mode: 0755
+#- name: Run Tomcat
+#  shell: ./startup.sh
+ # args:
+  #  chdir: /opt/tomcat8/apache-tomcat-8.5.23/bin
+
+#- name: Start application
+ # shell: "/opt/tomcat8/apache-tomcat-8.5.23/bin/startup.sh"
+  #args:
+   # chdir: "/opt"
+    #executable: "/bin/bash"
+#- name: Run a command as the apache user
+ # command: /opt/tomcat8/apache-tomcat-8.5.23/bin/startup.sh
+ # become: true
+ # become_user: root
+
+#- name: starting tomcat server
+ # shell: ./startup.sh chdir="/opt/tomcat8/apache-tomcat-8.5.23/bin"
+  #tags: start, restart
+
+#- name: stopping server
+ # shell: ./shutdown.sh chdir="/root/tomcat8/apache-tomcat-8.5.23/bin"
+ # tags: stop

@@ -1,0 +1,41 @@
+---
+# tasks file for java
+
+# tasks file for java
+- name: Update apt cache
+  apt: update_cache=yes
+
+- name: Upgrade packages
+  apt: upgrade=dist
+
+- name: ensure required packages are installed for Java 8
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+  - python-software-properties
+
+- name: Add Java repository to sources
+  apt_repository: repo='ppa:webupd8team/java'
+
+- name: Autoaccept license for Java
+  debconf: name='oracle-java8-installer' question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
+
+- name: Update APT package cache
+  apt: update_cache=yes
+
+- name: Install Java 8
+  apt: name=oracle-java8-installer state=latest install_recommends=yes
+
+#- name: Set Java 8 Env
+#  apt: name=oracle-java8-set-default state=latest install_recommends=yes
+
+- name: Copy the init script
+  command: sudo apt-get install oracle-java8-set-default
+
+
+- lineinfile:
+    path: /etc/environment
+    line: 'JAVA_HOME=/usr/lib/jvm/java-8-oracle'
+
+- lineinfile:
+    path: /etc/environment
+    line: 'JRE_HOME=/usr/lib/jvm/java-8-oracle/jre'
