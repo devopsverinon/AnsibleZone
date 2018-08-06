@@ -1,0 +1,15 @@
+---
+ - hosts: all
+   become: yes
+   gather_facts: no
+
+   tasks: 
+   
+   - name:  update package
+     apt:
+      update_cache: yes
+   
+   - name: "uninstalling apache"
+     apt:
+      name: apache2
+      state: absent

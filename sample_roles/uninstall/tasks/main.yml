@@ -1,0 +1,8 @@
+---
+# tasks file for uninstall
+
+- name:  update package
+  apt:
+    update_cache: yes
+  notify: uninstall apache2
+
