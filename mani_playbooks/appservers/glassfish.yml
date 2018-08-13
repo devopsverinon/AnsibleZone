@@ -13,5 +13,6 @@
     unarchive:
       src: /opt/glassfish-4.1.1.zip
       dest: /opt
+  - shell: "sudo su - root -c /opt/glassfish4/bin/asadmin start-domain"    
 
 
